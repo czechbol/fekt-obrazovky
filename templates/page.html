@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+        var i = 0;
+        var images = {{ images | tojson }};
+        var videos = {{ videos | tojson }};
+        var slideTime = 3000;
+        var video = document.getElementById("backgroundVid");
+
+
+        function changePicture() {
+            if (!images.length) {
+                i = 1
+                document.getElementById('vidSrc').src = videos[0];
+                imgToVid()
+                return;
+            }
+            else if (i > images.length - 1) {
+                document.location.reload(true)
+                return
+            }
+            document.getElementById("backgroundImg").src = images[i];
+
+            if (i < images.length) {
+                i++;
+                setTimeout(changePicture, slideTime);
+            } else if (videos.length) {
+                i = 1
+                document.getElementById('vidSrc').src = videos[0];
+                setTimeout(imgToVid, slideTime);
+            }
+        }
+
+        function imgToVid() {
+            var video = document.getElementById("backgroundVid");
+            document.getElementById("backgroundImg").hidden = true;
+            document.getElementById("backgroundVid").hidden = false;
+            video.addEventListener('ended', videoHandler, false);
+            video.load();
+            video.play();
+        }
+
+        function videoHandler(e) {
+            if (i > videos.length - 1) {
+                document.location.reload(true)
+            }
+            var video = document.getElementById("backgroundVid");
+            document.getElementById('vidSrc').src = videos[i];
+            console.log(videos[i], i)
+            video.load();
+            video.play();
+            i++;
+
+        }
+        window.onload = changePicture;
+    </script>
+</head>
+
+<body>
+
+    <body>
+        <img id="backgroundImg" class="center" src="" />
+    </body>
+    <video hidden id="backgroundVid" autoplay muted>
+        <source id="vidSrc" src="" type="video/mp4" />
+        Your browser does not support HTML5 video.
+    </video>
+</body>
+
+</html>
