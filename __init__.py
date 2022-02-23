@@ -57,11 +57,15 @@ def obrazovky():
         return render_template("both.html", images=images, videos=videos)
 
 
-@app.route("/<folder>")
+@app.route("/precise/<folder>")
 def foldered_obrazovky(folder):
     images = []
     videos = []
-    for file in os.listdir(join(PATH, folder)):
+    if os.path.exists(join(PATH, folder)):
+        path_str = join(PATH, folder)
+    else:
+        path_str = PATH
+    for file in os.listdir(path_str):
         if is_video(file):
             videos.append(url_for("static", filename=f"resources/{file}"))
         elif is_image(file):

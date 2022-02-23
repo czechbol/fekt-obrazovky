@@ -1,1 +1,8 @@
-Sem ukládat obrázky a mp4, soubory v podsložkách budou dostupné v ERL cestě /<složka>
+Sem ukládat obrázky a mp4
+
+soubory v podsložkách (resources/obrazovka1, resources/obrazovka2, ...)
+budou dostupné v ERL cestě /precise/<složka> (/precise/obrazovka1, ...)
+
+pokud podsložka neexistuje, ale je přistoupeno na její URL, použijí se soubory
+ve složce resources/. Díky tomu je možné nastavit obrazovky rovnou na zvláštní URL a není
+nutné je později přenastavovat.
