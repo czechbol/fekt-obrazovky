@@ -1,0 +1,1 @@
+Sem ukládat obrázky a mp4, soubory v podsložkách budou dostupné v ERL cestě /<složka>
