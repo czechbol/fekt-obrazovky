@@ -4,7 +4,6 @@ import os
 from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
-
 mimetypes.init()
 
 
@@ -54,3 +53,7 @@ def foldered_obrazovky(folder):
         elif is_image(file):
             images.append(url_for("static", filename=f"resources/{file}"))
     return render_template("page.html", images=images, videos=videos)
+
+
+if __name__ == "__main__":
+    app.run()
