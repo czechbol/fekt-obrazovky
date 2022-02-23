@@ -8,28 +8,20 @@
         var i = 0;
         var images = {{ images | tojson }};
         var videos = {{ videos | tojson }};
+        console.log(images);
+        console.log(videos);
         var slideTime = 3000;
         var video = document.getElementById("backgroundVid");
 
 
         function changePicture() {
-            if (!images.length) {
-                i = 1
-                document.getElementById('vidSrc').src = videos[0];
-                imgToVid()
-                return;
-            }
-            else if (i > images.length - 1) {
-                document.location.reload(true)
-                return
-            }
             document.getElementById("backgroundImg").src = images[i];
 
-            if (i < images.length) {
+            if (i < images.length - 1) {
                 i++;
                 setTimeout(changePicture, slideTime);
-            } else if (videos.length) {
-                i = 1
+            } else {
+                i = 1;
                 document.getElementById('vidSrc').src = videos[0];
                 setTimeout(imgToVid, slideTime);
             }
@@ -50,7 +42,6 @@
             }
             var video = document.getElementById("backgroundVid");
             document.getElementById('vidSrc').src = videos[i];
-            console.log(videos[i], i)
             video.load();
             video.play();
             i++;
@@ -61,10 +52,7 @@
 </head>
 
 <body>
-
-    <body>
-        <img id="backgroundImg" class="center" src="" />
-    </body>
+    <img id="backgroundImg" class="center" src="" />
     <video hidden id="backgroundVid" autoplay muted>
         <source id="vidSrc" src="" type="video/mp4" />
         Your browser does not support HTML5 video.

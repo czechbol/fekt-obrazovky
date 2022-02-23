@@ -3,6 +3,11 @@ import os
 
 from flask import Flask, render_template, url_for
 
+from os.path import join, dirname, realpath
+
+PATH = join(dirname(realpath(__file__)), "static/resources/")
+
+path = dirname(realpath(__file__))
 app = Flask(__name__)
 mimetypes.init()
 
@@ -35,24 +40,42 @@ def is_video(file):
 def obrazovky():
     images = []
     videos = []
-    for file in os.listdir("static/resources"):
+    for file in os.listdir(PATH):
         if is_video(file):
             videos.append(url_for("static", filename=f"resources/{file}"))
         elif is_image(file):
             images.append(url_for("static", filename=f"resources/{file}"))
-    return render_template("page.html", images=images, videos=videos)
+    videos.sort()
+    images.sort()
+    if images == [] and videos == []:
+        return render_template("empty.html")
+    elif images == []:
+        return render_template("videos.html", videos=videos)
+    elif videos == []:
+        return render_template("images.html", images=images)
+    else:
+        return render_template("both.html", images=images, videos=videos)
 
 
 @app.route("/<folder>")
 def foldered_obrazovky(folder):
     images = []
     videos = []
-    for file in os.listdir(f"static/resources/{folder}"):
+    for file in os.listdir(join(PATH, folder)):
         if is_video(file):
             videos.append(url_for("static", filename=f"resources/{file}"))
         elif is_image(file):
             images.append(url_for("static", filename=f"resources/{file}"))
-    return render_template("page.html", images=images, videos=videos)
+    videos.sort()
+    images.sort()
+    if images == [] and videos == []:
+        return render_template("empty.html")
+    elif images == []:
+        return render_template("videos.html", videos=videos)
+    elif videos == []:
+        return render_template("images.html", images=images)
+    else:
+        return render_template("both.html", images=images, videos=videos)
 
 
 if __name__ == "__main__":
