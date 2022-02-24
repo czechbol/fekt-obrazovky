@@ -17,7 +17,6 @@ def obrazovky():
     files = []
     for file in os.listdir(PATH):
         typ, encoding = mimetypes.guess_type(file)
-        print(typ, encoding)
 
         if typ is not None and typ.split("/")[0] in ["video", "image"]:
             files.append(
@@ -48,7 +47,6 @@ def foldered_obrazovky(folder):
 
     for file in os.listdir(path_str):
         typ, encoding = mimetypes.guess_type(file)
-        print(typ, encoding)
 
         if typ is not None and typ.split("/")[0] in ["video", "image"]:
             files.append(
