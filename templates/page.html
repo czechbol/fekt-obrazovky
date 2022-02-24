@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+        var i = 0;
+        var files = {{ files | tojson }};
+        var slideTime = 3000;
+
+
+        function change() {
+            if (i >= files.length) {
+                document.location.reload(true)
+                return
+            }
+            var prev_file = files[i]
+            if (i > 0) {
+                var j = i - 1;
+                var old = document.getElementById("background-" + j);
+                old.classList.remove('visible');
+                old.classList.add('invisible');
+            }
+            var item = document.getElementById("background-" + i);
+            item.classList.remove('invisible');
+            item.classList.add('visible');
+            var file = files[i];
+            i++;
+
+            if (file.type.includes("image")) {
+                setTimeout(change, slideTime);
+            } else {
+                item.addEventListener('ended', function () { change() }, false);
+                item.load();
+                item.play();
+            }
+        }
+        window.onload = change;
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        {%for file in files %}
+        {% if 'image' in file.type %}
+        {% if loop.index0 == 0 %}
+        <img id="background-{{ loop.index0 }}" class="visible" src="{{ file.url }}" />
+        {% else %}
+        <img id="background-{{ loop.index0 }}" class="invisible" src="{{ file.url }}" />
+        {% endif %}
+        {% else %}
+        <video id="background-{{ loop.index0 }}" class="invisible" muted>
+            <source id="vidSrc" src={{ file.url }} type="{{ file.type }}" />
+            Your browser does not support HTML5 video.
+        </video>
+        {% endif %}
+        {%endfor%}
+    </div>
+
+
+
+</body>
+
+</html>
